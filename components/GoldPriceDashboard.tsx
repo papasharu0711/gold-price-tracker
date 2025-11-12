@@ -54,8 +54,8 @@ export default function GoldPriceDashboard() {
     async function loadData() {
       try {
         const [pricesRes, statsRes] = await Promise.all([
-          fetch('/data/gold-prices.json'),
-          fetch('/data/statistics.json')
+          fetch('/gold-prices.json'),
+          fetch('/statistics.json')
         ]);
         
         const pricesData = await pricesRes.json();

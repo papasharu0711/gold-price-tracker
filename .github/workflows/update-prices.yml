@@ -1,0 +1,43 @@
+name: Update Gold Prices
+
+on:
+  schedule:
+    # 매일 한국시간 오전 7시 (UTC 22시 전날)
+    - cron: '0 22 * * *'
+  workflow_dispatch: # 수동 실행 가능
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Install Chrome
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+          
+      - name: Install Python dependencies
+        run: |
+          pip install selenium webdriver-manager pandas numpy scipy openpyxl
+          
+      - name: Run scraper and analysis
+        run: |
+          python scripts/scraper.py
+          python scripts/analyzer.py
+          
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🔄 Update gold prices - $(date +'%Y-%m-%d %H:%M')" && git push)

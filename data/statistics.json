@@ -1,0 +1,17 @@
+{
+  "lastUpdated": "",
+  "currentPrice": {
+    "buyPure": 0,
+    "sellPure": 0,
+    "sell18K": 0,
+    "sell14K": 0
+  },
+  "statistics": {
+    "minPrice": 0,
+    "maxPrice": 0,
+    "avgPrice": 0,
+    "volatility": 0,
+    "trend": "",
+    "prediction30d": 0
+  }
+}

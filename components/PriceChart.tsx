@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
   LineChart,
   Line,
@@ -23,12 +24,57 @@ interface Props {
   data: PriceData[];
 }
 
+type Period = '1M' | '3M' | '6M' | '1Y' | '3Y' | 'ALL';
+
 export default function PriceChart({ data }: Props) {
-  // 최근 60개 데이터만 표시 (너무 많으면 차트가 복잡함)
-  const chartData = data.slice(0, 60).reverse();
+  const [period, setPeriod] = useState<Period>('3M');
+
+  // 기간별 데이터 개수 계산
+  const getPeriodData = () => {
+    const periodMap: Record<Period, number> = {
+      '1M': 30,
+      '3M': 90,
+      '6M': 180,
+      '1Y': 365,
+      '3Y': 1095,
+      'ALL': data.length
+    };
+    
+    return data.slice(0, periodMap[period]).reverse();
+  };
+
+  const chartData = getPeriodData();
+
+  const periods: { label: string; value: Period }[] = [
+    { label: '1개월', value: '1M' },
+    { label: '3개월', value: '3M' },
+    { label: '6개월', value: '6M' },
+    { label: '1년', value: '1Y' },
+    { label: '3년', value: '3Y' },
+    { label: '전체', value: 'ALL' }
+  ];
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <div className="space-y-4">
+      {/* 기간 선택 버튼 */}
+      <div className="flex gap-2 flex-wrap">
+        {periods.map((p) => (
+          <button
+            key={p.value}
+            onClick={() => setPeriod(p.value)}
+            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+              period === p.value
+                ? 'bg-amber-600 text-white shadow-md'
+                : 'bg-white text-gray-700 hover:bg-amber-50 border border-gray-200'
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 차트 */}
+      <ResponsiveContainer width="100%" height={400}>
       <LineChart data={chartData}>
         <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
         <XAxis
@@ -79,5 +125,6 @@ export default function PriceChart({ data }: Props) {
         />
       </LineChart>
     </ResponsiveContainer>
+    </div>
   );
 }

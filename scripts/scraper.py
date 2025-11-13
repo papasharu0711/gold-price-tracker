@@ -37,13 +37,24 @@ def scrape_latest_gold_prices():
         wait = WebDriverWait(driver, 10)
         table = wait.until(EC.presence_of_element_located((By.ID, "example-table")))
         
-        # 최근 1개월 데이터만 수집
-        print("최신 데이터 수집 중...")
+        # 전체 기간 선택
+        print("전체 데이터 수집 모드...")
+        try:
+            all_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[contains(text(), '전체')]")))
+            all_button.click()
+            time.sleep(2)
+            
+            # 페이지 크기를 30으로 설정
+            page_size_select = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "select.tabulator-page-size")))
+            driver.execute_script("arguments[0].value = '30'; arguments[0].dispatchEvent(new Event('change'));", page_size_select)
+            time.sleep(2)
+        except Exception as e:
+            print(f"필터 설정 중 오류: {e}")
         
         # 현재 페이지의 데이터만 추출 (최신 데이터)
         rows = driver.find_elements(By.CSS_SELECTOR, ".tabulator-row")
         
-        for row in rows[:30]:  # 최근 30개만
+        for row in rows:  # 모든 데이터 수집
             try:
                 cells = row.find_elements(By.CSS_SELECTOR, ".tabulator-cell")
                 

@@ -1,31 +1,31 @@
 {
-  "lastUpdated": "2026-03-02T22:11:12.286954",
+  "lastUpdated": "2026-03-03T22:10:26.726074",
   "dataCount": 365,
   "currentPrice": {
-    "buyPure": 1100000,
-    "sellPure": 887000,
-    "sell18K": 652000,
-    "sell14K": 505600
+    "buyPure": 1104000,
+    "sellPure": 896000,
+    "sell18K": 658600,
+    "sell14K": 510800
   },
   "statistics": {
-    "minPrice": 589000,
+    "minPrice": 605000,
     "maxPrice": 934000,
-    "avgPrice": 786920,
-    "medianPrice": 777000,
-    "volatility": 8.65,
-    "ma7": 866285,
-    "ma30": 862000
+    "avgPrice": 790202,
+    "medianPrice": 778000,
+    "volatility": 8.36,
+    "ma7": 887285,
+    "ma30": 869200
   },
   "trend": {
     "direction": "강한 하락 추세",
     "icon": "📉",
-    "slope": -576.13,
-    "prediction30d": 869716,
-    "change30d": -1.95
+    "slope": -561.59,
+    "prediction30d": 879152,
+    "change30d": -1.88
   },
   "signal": {
     "message": "고가 주의",
     "icon": "🔴",
-    "position": 86.4
+    "position": 88.4
   }
 }
